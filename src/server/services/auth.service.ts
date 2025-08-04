@@ -1,6 +1,5 @@
 import { hashPassword, signJwt, signRefreshToken, verifyPassword, verifyRefreshToken } from "@/lib/auth/utils";
 import { Context } from "../context";
-import { cookies } from "next/headers";
 import { Errors } from "@/lib/errors/utils";
 
 export class AuthService {

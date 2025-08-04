@@ -1,6 +1,5 @@
 import { z } from 'zod';
 import { router, publicProcedure, protectedProcedure } from '../../trpc';
-import { hashPassword, verifyPassword, signJwt, signRefreshToken, verifyRefreshToken } from '@/lib/auth/utils';
 import { cookies } from 'next/headers';
 import { deleteCookies, storeCookies } from '@/lib/cookie/utils';
 import { AuthService } from '@/server/services/auth.service';
@@ -36,7 +35,7 @@ export const authRouter = router({
       }
     }),
 
-  me: publicProcedure.query(({ ctx }) => {
+  me: protectedProcedure.query(({ ctx }) => {
     if (!ctx.user) return null;
     return { id: ctx.user.id, email: ctx.user.email };
   }),
@@ -69,7 +68,7 @@ export const authRouter = router({
     }
   }),
 
-  logout: protectedProcedure.mutation(async ({ ctx }) => {
+  logout: protectedProcedure.mutation(async () => {
     await deleteCookies(['token', 'refreshToken']);
     return { message: 'Logged out successfully' };
   }),
